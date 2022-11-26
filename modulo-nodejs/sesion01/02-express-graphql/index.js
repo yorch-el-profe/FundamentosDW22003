@@ -42,6 +42,11 @@ const products = [
 		name: "iPhone 14",
 		price: 40000,
 	},
+	{
+		id: 1004,
+		name: "Playstation 4",
+		price: 6000,
+	},
 ];
 
 const resolvers = {
@@ -49,7 +54,7 @@ const resolvers = {
 		return products;
 	},
 	getById({ id }) {
-		return products.find((p) => p.id === id);
+		return products.find((p) => p.id.toString() === id.toString());
 	},
 	getByName({ name }) {
 		return products.filter((p) =>
