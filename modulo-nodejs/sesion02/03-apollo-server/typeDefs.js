@@ -50,9 +50,23 @@ module.exports = `
     modules: [Module!]!
   }
 
+  input NewStudent {
+    name: String!
+    lastName: String!
+    age: Int!
+    gender: Gender
+  }
+
   # consultas
   type Query {
     getCourses: [Course!]!
+    getStudents: [Student!]!
+  }
+
+  type Mutation {
+    createCourse(name: String!): Course!
+    createModule(name: String!): Module!
+    createStudent(input: NewStudent!): Student!
   }
 `;
 
@@ -69,6 +83,9 @@ module.exports = `
 
   [Persona]
     [], [null], [{ name: "Jorge"}], null
+
+  [Persona]!
+    [], [null], [{ name: "Jorge"}]
 
   [Persona!]
     [], [{name: "Luis"}], null
