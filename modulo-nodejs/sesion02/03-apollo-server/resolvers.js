@@ -1,3 +1,5 @@
+const logger = require("./logger");
+
 let lastCourseId = 1002;
 let lastModuleId = 2004;
 let lastStudentId = 3002;
@@ -85,6 +87,7 @@ module.exports = {
 				result.push({ ...course, modules: $modules });
 			}*/
 
+			logger.info("Query GetCourses");
 			return courses.map((c) => ({
 				...c,
 				modules: c.modules.map((id) => modules.find((m) => m.id === id)),
