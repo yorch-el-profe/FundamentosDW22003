@@ -55,3 +55,24 @@ module.exports = `
     getCourses: [Course!]!
   }
 `;
+
+/*
+  type Persona {
+    name: String
+  }
+
+  Persona
+    { name: "Juan" }, null
+
+  Persona!
+    { name: "Pedro" }
+
+  [Persona]
+    [], [null], [{ name: "Jorge"}], null
+
+  [Persona!]
+    [], [{name: "Luis"}], null
+
+  [Persona!]!
+    [] [{name: "Oscar"}]
+*/
