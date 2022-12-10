@@ -33,6 +33,11 @@ module.exports = `
     role: UserRole!
   }
 
+  input Credential {
+    email: String!
+    password: String!
+  }
+
   type Query {
     getCourses: [Course!]!
     getModules: [Module!]!
@@ -43,5 +48,6 @@ module.exports = `
     createModule(name: String!): Module!
     assignModule(input: AssignModule): Boolean
     createUser(input: NewUser): User!
+    authenticate(input: Credential): String!
   }
 `;

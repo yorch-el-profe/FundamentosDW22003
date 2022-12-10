@@ -1,5 +1,8 @@
 const { tables } = require("../database/sequelize");
 const logger = require("../util/logger");
+const md5 = require("md5");
+const { GraphQLError } = require("graphql");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
 	Query: {
@@ -35,7 +38,22 @@ module.exports = {
 		},
 		createUser(_, { input }) {
 			const { email, password, role } = input;
-			return tables.User.create({ email, password, role });
+			return tables.User.create({ email, password: md5(password), role });
+		},
+		async authenticate(_, { input }) {
+			const { email, password } = input;
+			const user = await tables.User.findOne({
+				where: {
+					email,
+					password: md5(password),
+				},
+			});
+
+			if (!user) {
+				throw new GraphQLError("Correo o contraseña incorrectos");
+			}
+
+			return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET);
 		},
 	},
 };
