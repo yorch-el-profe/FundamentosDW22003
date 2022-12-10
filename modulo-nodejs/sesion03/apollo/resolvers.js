@@ -4,30 +4,36 @@ const md5 = require("md5");
 const { GraphQLError } = require("graphql");
 const jwt = require("jsonwebtoken");
 
+function verifyToken(resolver) {
+	return function (parent, args, context) {
+		try {
+			jwt.verify(context.token, process.env.JWT_SECRET);
+			resolver(parent, args, context);
+		} catch (e) {
+			throw new GraphQLError("El usuario no tiene acceso a este recurso");
+		}
+	};
+}
+
 module.exports = {
 	Query: {
 		getCourses() {
 			return tables.Course.findAll({ include: tables.Module });
 		},
-		getModules(_, args, { token }) {
-			try {
-				jwt.verify(token, process.env.JWT_SECRET);
-				return tables.Module.findAll();
-			} catch (e) {
-				throw new GraphQLError("El usuario no tiene acceso a este recurso");
-			}
-		},
+		getModules: verifyToken(function () {
+			return tables.Module.findAll();
+		}),
 	},
 	Mutation: {
-		createCourse(_, { name }) {
+		createCourse: verifyToken(function (_, { name }) {
 			logger.debug(`Creating course: ${name}`);
 			return tables.Course.create({ name });
-		},
-		createModule(_, { name }) {
+		}),
+		createModule: verifyToken(function (_, { name }) {
 			logger.debug(`Creating module: ${name}`);
 			return tables.Module.create({ name });
-		},
-		async assignModule(_, { input }) {
+		}),
+		assignModule: verifyToken(async function (_, { input }) {
 			const { courseId, moduleId } = input;
 
 			await tables.Module.update(
@@ -40,11 +46,11 @@ module.exports = {
 			);
 
 			return true;
-		},
-		createUser(_, { input }) {
+		}),
+		createUser: verifyToken(function (_, { input }) {
 			const { email, password, role } = input;
 			return tables.User.create({ email, password: md5(password), role });
-		},
+		}),
 		async authenticate(_, { input }) {
 			const { email, password } = input;
 			const user = await tables.User.findOne({
