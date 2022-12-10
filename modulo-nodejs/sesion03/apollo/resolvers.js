@@ -4,6 +4,7 @@ module.exports = {
 		getModules() {},
 	},
 	Mutation: {
+		createCourse() {},
 		createModule() {},
 	},
 };
