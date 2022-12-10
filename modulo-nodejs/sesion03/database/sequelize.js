@@ -1,5 +1,7 @@
 const { Sequelize } = require("sequelize");
 const logger = require("../util/logger");
+const courseTable = require("./model/course");
+const moduleTable = require("./model/module");
 const { MYSQL_USER, MYSQL_PASS, MYSQL_HOST, MYSQL_DB } = process.env;
 
 const sequelize = new Sequelize(MYSQL_DB, MYSQL_USER, MYSQL_PASS, {
@@ -7,6 +9,12 @@ const sequelize = new Sequelize(MYSQL_DB, MYSQL_USER, MYSQL_PASS, {
 	dialect: "mysql",
 	logging: (message) => logger.debug(message),
 });
+
+const Course = sequelize.define("courses", courseTable);
+const Module = sequelize.define("modules", moduleTable);
+
+Course.hasMany(Module);
+Module.belongsTo(Course);
 
 async function connect() {
 	try {
@@ -20,4 +28,8 @@ async function connect() {
 
 module.exports = {
 	connect,
+	tables: {
+		Course,
+		Module,
+	},
 };
