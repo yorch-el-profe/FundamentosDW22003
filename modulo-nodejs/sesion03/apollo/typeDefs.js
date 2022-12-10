@@ -10,6 +10,29 @@ module.exports = `
     modules: [Module!]!
   }
 
+  enum UserRole {
+    user
+    admin
+  }
+
+  type User {
+    id: ID!
+    email: String!
+    password: String!
+    role: UserRole! 
+  }
+
+  input AssignModule {
+    courseId: ID!
+    moduleId: ID!
+  }
+
+  input NewUser {
+    email: String!
+    password: String!
+    role: UserRole!
+  }
+
   type Query {
     getCourses: [Course!]!
     getModules: [Module!]!
@@ -18,6 +41,7 @@ module.exports = `
   type Mutation {
     createCourse(name: String!): Course!
     createModule(name: String!): Module!
-    assignModule(courseId: ID!, moduleId: ID!): Boolean
+    assignModule(input: AssignModule): Boolean
+    createUser(input: NewUser): User!
   }
 `;

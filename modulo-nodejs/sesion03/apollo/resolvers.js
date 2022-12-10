@@ -19,7 +19,9 @@ module.exports = {
 			logger.debug(`Creating module: ${name}`);
 			return tables.Module.create({ name });
 		},
-		async assignModule(_, { courseId, moduleId }) {
+		async assignModule(_, { input }) {
+			const { courseId, moduleId } = input;
+
 			await tables.Module.update(
 				{ courseId },
 				{
@@ -30,6 +32,10 @@ module.exports = {
 			);
 
 			return true;
+		},
+		createUser(_, { input }) {
+			const { email, password, role } = input;
+			return tables.User.create({ email, password, role });
 		},
 	},
 };
