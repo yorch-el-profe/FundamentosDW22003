@@ -13,6 +13,9 @@ const server = new ApolloServer({ typeDefs, resolvers });
 
 startStandaloneServer(server, {
 	listen: { port: 8080 },
+	context: ({ req }) => ({
+		token: req.headers.authorization,
+	}),
 }).then(function () {
 	logger.info("Servidor escuchando el puerto 8080 🚀");
 });

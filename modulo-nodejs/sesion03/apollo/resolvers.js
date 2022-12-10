@@ -9,8 +9,13 @@ module.exports = {
 		getCourses() {
 			return tables.Course.findAll({ include: tables.Module });
 		},
-		getModules() {
-			return tables.Module.findAll();
+		getModules(_, args, { token }) {
+			try {
+				jwt.verify(token, process.env.JWT_SECRET);
+				return tables.Module.findAll();
+			} catch (e) {
+				throw new GraphQLError("El usuario no tiene acceso a este recurso");
+			}
 		},
 	},
 	Mutation: {
