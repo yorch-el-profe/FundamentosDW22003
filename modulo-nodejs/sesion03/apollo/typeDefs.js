@@ -18,5 +18,6 @@ module.exports = `
   type Mutation {
     createCourse(name: String!): Course!
     createModule(name: String!): Module!
+    assignModule(courseId: ID!, moduleId: ID!): Boolean
   }
 `;
