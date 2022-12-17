@@ -1,5 +1,6 @@
 import {
 	CreationOptional,
+	HasManyAddAssociationMixin,
 	InferAttributes,
 	InferCreationAttributes,
 	Model,
@@ -16,4 +17,6 @@ export class Song extends Model<
 	declare duration: number;
 
 	declare artists?: NonAttribute<Artist[]>;
+
+	declare addArtist: HasManyAddAssociationMixin<Artist, number>;
 }

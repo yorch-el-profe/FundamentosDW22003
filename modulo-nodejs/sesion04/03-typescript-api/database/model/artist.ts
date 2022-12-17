@@ -14,5 +14,5 @@ export class Artist extends Model<
 	declare id: CreationOptional<number>;
 	declare name: string;
 
-	declare songs?: NonAttribute<Song[]>;
+	declare Songs?: NonAttribute<Song[]>;
 }

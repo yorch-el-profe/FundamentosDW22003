@@ -13,7 +13,7 @@ const sequelize = new Sequelize(
 	{
 		host: MYSQL_HOST,
 		dialect: "mysql",
-		logging: (msg: String) => logger.info(msg),
+		logging: (msg: String) => logger.debug(msg),
 	}
 );
 
